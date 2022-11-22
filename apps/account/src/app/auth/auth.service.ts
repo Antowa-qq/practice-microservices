@@ -1,3 +1,4 @@
+import { AccountLogin, AccountRegister } from '@app/contracts';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './auth.controller';
@@ -12,7 +13,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async register({ email, password, displayName }: RegisterDto) {
+  async register({ email, password, displayName }: AccountRegister.Request) {
     const oldUser = await this.userRepository.findUser(email);
     if (oldUser) {
       throw new Error('User already exists');
@@ -41,6 +42,7 @@ export class AuthService {
     }
     return { id: user._id };
   }
+
   async login(id: string) {
     return {
       accessToken: await this.jwtService.signAsync({ id }),

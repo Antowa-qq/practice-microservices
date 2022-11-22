@@ -1,4 +1,6 @@
+import { AccountLogin, AccountRegister } from '@app/contracts';
 import { Body, Controller, Post } from '@nestjs/common';
+import { RMQRoute } from 'nestjs-rmq';
 import { AuthService } from './auth.service';
 
 export class RegisterDto {
@@ -16,13 +18,17 @@ export class LoginDto {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  async register(@Body() dto: RegisterDto) {
+  @RMQRoute(AccountRegister.topic)
+  async register(
+    @Body() dto: AccountRegister.Request
+  ): Promise<AccountRegister.Response> {
     return this.authService.register(dto);
   }
 
-  @Post('login')
-  async login(@Body() { email, password }: LoginDto) {
+  @RMQRoute(AccountLogin.topic)
+  async login(
+    @Body() { email, password }: AccountLogin.Request
+  ): Promise<AccountLogin.Response> {
     const { id } = await this.authService.validateUser(email, password);
     return this.authService.login(id);
   }
