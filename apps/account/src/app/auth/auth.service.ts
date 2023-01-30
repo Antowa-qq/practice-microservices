@@ -1,7 +1,6 @@
 import { AccountLogin, AccountRegister } from '@app/contracts';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterDto } from './auth.controller';
 import { UserRepository } from './../user/repositories/user.repository';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserRole } from '@app/interfaces';
