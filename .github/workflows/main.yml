@@ -1,0 +1,17 @@
+name: Check Spelling
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cspell:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Check spelling
+        uses: kevgo/cspell-action@v1
+        with:
+          files: ${{ github.event.pull_request.changed_files }}
